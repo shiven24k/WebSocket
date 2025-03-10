@@ -28,8 +28,12 @@ io.on("connection", (socket) => {
     console.log("User Connected",socket.id);
     socket.emit("welcome","Welcome to the chat");
     
-    socket.on("message",()=>{
-       console.log("Message from user")
+    socket.on("message",({room, message})=>{
+       console.log({room, message});
+       io.to(room).emit("recieve-message",message)
+    })
+    socket.on("join-room",(room)=>{
+        socket.join(room)
     })
 
     socket.on("disconnect",()=>{
